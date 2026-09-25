@@ -215,6 +215,7 @@ fun PantallaAgregarEstudiante(
                 onExpandedChange = { expandirSeccion = !expandirSeccion }
             )
             {
+
                 OutlinedTextField(
                     value = seccion,
                     onValueChange = {},
