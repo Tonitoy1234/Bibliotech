@@ -1,36 +1,36 @@
 package com.example.bibliotech.model
 
-// ---------------- IMPORTACIONES ----------------
+/*
+class Libro (
 
-// Indica que esta clase será una tabla de Room
+    val id: Int,
+    val titulo: String,
+    val autor: String,
+    val categoria: String,
+    val anio: Int,
+    val disponible: Boolean = false
+    )
+*/
+
+
+
+//importar la libreria
+//Se encarga de comvertir la clase a una tabla
 import androidx.room.Entity
-
-// Permite definir la llave primaria de la tabla
 import androidx.room.PrimaryKey
 
-// ----------------------------------------------------
-// ENTIDAD LIBRO
-// Cada objeto Libro será una fila dentro de la tabla
-// llamada "libros".
-// ----------------------------------------------------
+//Ahora la clase representa a *Libros en SQlite y ademas sirve de modelo para la UI*
 
-@Entity(tableName = "libros")
+@Entity ("libros")
+
 data class Libro(
-
-    // Llave primaria.
-    // autoGenerate permite que SQLite genere el ID automáticamente.
+    //Identificador unico generado automaticamente
     @PrimaryKey(autoGenerate = true)
+    //registro de propiedades de la clase
     val id: Int = 0,
-    // Título del libro
     val titulo: String,
-    // Nombre del autor
     val autor: String,
-    // Género o categoría
     val categoria: String,
-    // Año de publicación
     val anio: Int,
-    // Indica si el libro está disponible para préstamo
-    val descripcion:String,
-    val disponible: Boolean
-
+    val disponible: Boolean = false
 )

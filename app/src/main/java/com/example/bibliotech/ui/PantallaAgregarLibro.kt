@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.bibliotech.model.Libro
 import com.example.bibliotech.viewmodel.LibroViewModel
-//IMPORTACIONES AGREGADAS
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -165,7 +165,6 @@ fun PantallaAgregarLibro(
                         autor = autor,
                         categoria = categoria,
                         anio = anio.toIntOrNull() ?: 0,
-                        descripcion = descripcion,
                         disponible = true
                     )
                     viewModel.insertarLibro(nuevoLibro)
@@ -182,7 +181,13 @@ fun PantallaAgregarLibro(
                 onClick = onCancelar,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Cancelar", color = Color.White)
+                Text(text = "Cancelar", color = Color.Black)
+            }
+            Button(
+                onClick = onCancelar,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Cancelar")
             }
         }
     }

@@ -1,11 +1,9 @@
 package com.example.bibliotech
-
 import android.app.Application
 import com.example.bibliotech.data.BibliotecaDatabase
 import com.example.bibliotech.data.DatabaseProvider
-
+import com.example.bibliotech.data.EstudianteRepository
 import com.example.bibliotech.data.LibroRepository
-
 
 class BibliotecaApplication : Application() {
 
@@ -19,4 +17,12 @@ class BibliotecaApplication : Application() {
     val libroRepository: LibroRepository by lazy {
         LibroRepository(libroDao)
     }
+
+    val estudianteDao
+        get() = database.estudianteDao()
+
+    val estudianteRepository: EstudianteRepository by lazy {
+        EstudianteRepository(estudianteDao)
+    }
+
 }
