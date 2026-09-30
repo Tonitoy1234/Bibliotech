@@ -51,6 +51,7 @@ fun PantallaEditarEstudiante(
     var grado by remember(estudiante) {
         mutableStateOf(if (estudiante.grado.isNotEmpty()) estudiante.grado else grados[0])
     }
+
     var expandirGrado by remember { mutableStateOf(false) }
 
     val secciones = listOf(
