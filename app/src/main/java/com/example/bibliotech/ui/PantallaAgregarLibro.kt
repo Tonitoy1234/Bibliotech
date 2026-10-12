@@ -1,50 +1,50 @@
 package com.example.bibliotech.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.bibliotech.model.Libro
 import com.example.bibliotech.viewmodel.LibroViewModel
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaAgregarLibro(
     viewModel: LibroViewModel,
     onGuardar: () -> Unit,
     onCancelar: () -> Unit
-){
-    var titulo by remember {mutableStateOf("") }
-    var autor by remember {mutableStateOf("") }
-    var categoria by remember {mutableStateOf("") }
-    var anio by remember {mutableStateOf("") }
-    var descripcion by remember {mutableStateOf("") }
+) {
+    var titulo by remember { mutableStateOf("") }
+    var autor by remember { mutableStateOf("") }
+    var categoria by remember { mutableStateOf("") }
+    var anio by remember { mutableStateOf("") }
+    var descripcion by remember { mutableStateOf("") }
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    Scaffold(containerColor = Color.Black,
-
+    Scaffold(
+        containerColor = Color.Black,
         topBar = {
             TopAppBar(
                 title = {
@@ -58,21 +58,25 @@ fun PantallaAgregarLibro(
                 )
             )
         }
-    ){paddingValues ->
+    ) { paddingValues ->
 
-        Column(modifier = Modifier.fillMaxSize()
-            .background(Color.Black)
-            .verticalScroll(rememberScrollState())
-            .padding(paddingValues)){
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(Color.Black)
+                .verticalScroll(rememberScrollState())
+                .padding(20.dp)
+        ) {
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = titulo,
                 onValueChange = { titulo = it },
                 label = { Text("Título") },
                 modifier = Modifier.fillMaxWidth(),
-                //modificaciones a los impus
+                textStyle = TextStyle(color = Color.White),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF3B82F6),
                     unfocusedBorderColor = Color.White,
@@ -83,7 +87,6 @@ fun PantallaAgregarLibro(
                     unfocusedTextColor = Color.White
                 )
             )
-
             Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
@@ -91,6 +94,7 @@ fun PantallaAgregarLibro(
                 onValueChange = { autor = it },
                 label = { Text("Autor") },
                 modifier = Modifier.fillMaxWidth(),
+                textStyle = TextStyle(color = Color.White),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF3B82F6),
                     unfocusedBorderColor = Color.White,
@@ -101,7 +105,6 @@ fun PantallaAgregarLibro(
                     unfocusedTextColor = Color.White
                 )
             )
-
             Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
@@ -109,6 +112,7 @@ fun PantallaAgregarLibro(
                 onValueChange = { categoria = it },
                 label = { Text("Categoría") },
                 modifier = Modifier.fillMaxWidth(),
+                textStyle = TextStyle(color = Color.White),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF3B82F6),
                     unfocusedBorderColor = Color.White,
@@ -119,7 +123,6 @@ fun PantallaAgregarLibro(
                     unfocusedTextColor = Color.White
                 )
             )
-
             Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
@@ -127,6 +130,7 @@ fun PantallaAgregarLibro(
                 onValueChange = { anio = it },
                 label = { Text("Año") },
                 modifier = Modifier.fillMaxWidth(),
+                textStyle = TextStyle(color = Color.White),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF3B82F6),
                     unfocusedBorderColor = Color.White,
@@ -137,7 +141,6 @@ fun PantallaAgregarLibro(
                     unfocusedTextColor = Color.White
                 )
             )
-
             Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedTextField(
@@ -145,6 +148,7 @@ fun PantallaAgregarLibro(
                 onValueChange = { descripcion = it },
                 label = { Text("Descripción") },
                 modifier = Modifier.fillMaxWidth(),
+                textStyle = TextStyle(color = Color.White),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF3B82F6),
                     unfocusedBorderColor = Color.White,
@@ -155,7 +159,6 @@ fun PantallaAgregarLibro(
                     unfocusedTextColor = Color.White
                 )
             )
-
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
@@ -165,29 +168,26 @@ fun PantallaAgregarLibro(
                         autor = autor,
                         categoria = categoria,
                         anio = anio.toIntOrNull() ?: 0,
+                        descripcion = descripcion,
                         disponible = true
                     )
-                    viewModel.insertarLibro(nuevoLibro)
+                    viewModel.insertarLibros(nuevoLibro)
                     onGuardar()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Guardar Libro")
             }
-
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedButton(
                 onClick = onCancelar,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Cancelar", color = Color.Black)
-            }
-            Button(
-                onClick = onCancelar,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Cancelar")
+                Text(
+                    text = "Cancelar",
+                    color = Color.White
+                )
             }
         }
     }

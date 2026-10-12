@@ -11,7 +11,7 @@ composeBom = "2026.02.01"
 androidx-navigation = "2.8.5"
 material3 = "1.4.0"
 # Versión oficial de Room
-room = "2.6.1"
+room = "2.8.5"
 
 # KSP compatible con Kotlin 2.2.10
 ksp = "2.2.10-2.0.2"

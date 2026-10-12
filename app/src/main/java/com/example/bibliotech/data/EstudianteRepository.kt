@@ -1,5 +1,6 @@
 package com.example.bibliotech.data
 
+
 import com.example.bibliotech.model.Estudiante
 
 
@@ -12,47 +13,23 @@ class EstudianteRepository(
 ) {
 
 
-    // =========================
-    // CREATE
-    // Inserta un nuevo estudiante
-    // =========================
-    fun insertarEstudiante(estudiante: Estudiante): Long {
+    suspend fun insertarEstudiante(estudiante: Estudiante): Long {
         return estudianteDao.insertarEstudiante(estudiante)
     }
 
-
-    // =========================
-    // READ
-    // Obtiene todos los estudiantes
-    // =========================
-    fun obtenerEstudiantes(): List<Estudiante> {
+    suspend fun obtenerEstudiantes(): List<Estudiante> {
         return estudianteDao.obtenerEstudiantes()
     }
 
-
-    // =========================
-    // READ
-    // Obtiene un estudiante por su ID
-    // =========================
-    fun obtenerEstudiantePorId(id: Int): Estudiante? {
+    suspend fun obtenerEstudiantePorId(id: Int): Estudiante? {
         return estudianteDao.obtenerEstudiantePorId(id)
     }
 
-
-    // =========================
-    // UPDATE
-    // Actualiza la información del estudiante
-    // =========================
-    fun actualizarEstudiante(estudiante: Estudiante) {
+    suspend fun actualizarEstudiante(estudiante: Estudiante) {
         estudianteDao.actualizarEstudiante(estudiante)
     }
 
-
-    // =========================
-    // DELETE
-    // Elimina un estudiante
-    // =========================
-    fun eliminarEstudiante(estudiante: Estudiante) {
+    suspend fun eliminarEstudiante(estudiante: Estudiante) {
         estudianteDao.eliminarEstudiante(estudiante)
     }
 

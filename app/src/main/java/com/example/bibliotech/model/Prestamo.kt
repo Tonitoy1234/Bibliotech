@@ -2,8 +2,8 @@ package com.example.bibliotech.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
-
 
 @Entity(
     tableName = "Prestamos",
@@ -11,23 +11,30 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = Libro::class,
             parentColumns = ["id"],
-            childColumns = ["idLibro"],
-            onDelete = ForeignKey.CASCADE
+            childColumns = ["idLibro"]
         ),
         ForeignKey(
             entity = Estudiante::class,
             parentColumns = ["id"],
-            childColumns = ["idEstudiante"],
-            onDelete = ForeignKey.CASCADE
+            childColumns = ["idEstudiante"]
         )
+    ],
+    indices = [
+        Index(value = ["idLibro"]),
+        Index(value = ["idEstudiante"])
     ]
 )
 data class Prestamo(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    //Libro Prestado
     val idLibro: Int,
+    //Estudiante que lo presta
     val idEstudiante: Int,
+    //Fecha en que se presta
     val fechaPrestamo: String,
-    val fechaDevolucion: String,
+    //Fecha en que se debe devolver
+    val fechaDevolucion: String? = null,
+    //Estado del prestamo
     val devuelto: Boolean = false
 )

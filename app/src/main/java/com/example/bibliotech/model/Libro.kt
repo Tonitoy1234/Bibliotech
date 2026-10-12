@@ -32,5 +32,6 @@ data class Libro(
     val autor: String,
     val categoria: String,
     val anio: Int,
+    val descripcion: String = "",
     val disponible: Boolean = false
 )

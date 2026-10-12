@@ -5,15 +5,61 @@ import androidx.room.RoomDatabase
 import com.example.bibliotech.model.Estudiante
 import com.example.bibliotech.model.Libro
 import com.example.bibliotech.model.Prestamo
+import com.example.bibliotech.model.Usuario
 
 @Database(
-    entities = [Libro::class, Estudiante::class, Prestamo::class],
-    version = 3,
+    entities = [
+        Libro::class,
+        Estudiante::class,
+        Prestamo::class,
+        Usuario::class
+    ],
+    version = 5,
     exportSchema = false
 )
 abstract class BibliotecaDatabase : RoomDatabase() {
 
     abstract fun libroDao(): LibroDao
+
     abstract fun estudianteDao(): EstudianteDao
-    abstract fun prestamoDao(): PretamoDao
+
+    abstract fun prestamoDao(): PrestamoDao
+
+    abstract fun usuarioDao(): UsuarioDao
 }
+
+// ---------------- IMPORTACIONES ----------------
+
+/*
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import com.example.bibliotech.model.Estudiante
+
+// Importamos la entidad Libro
+import com.example.bibliotech.model.Libro
+import com.example.bibliotech.model.Prestamo
+
+@Database(
+
+    // Lista de tablas que tendrá la base de datos
+    entities = [Libro::class, Estudiante::class, Prestamo::class],
+
+    // Primera versión de la base de datos
+    //version = 1,
+    //version = 2,
+    version = 3,
+
+    // No exportaremos el esquema durante el curso
+    exportSchema = false
+)
+abstract class BibliotecaDatabase : RoomDatabase() {
+
+    // El DAO se agregará en la siguiente guía.
+    abstract fun libroDao(): LibroDao
+
+    abstract fun estudianteDao(): EstudianteDao
+
+    abstract fun prestamoDao(): PrestamoDao
+
+}
+*/

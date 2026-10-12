@@ -1,7 +1,7 @@
 package com.example.bibliotech.ui
 
 import android.app.Application
-import com.example.bibliotech.BibliotecaApplication
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,25 +31,28 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-
-import com.example.bibliotech.ui.componentes.TarjetaLibro
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.bibliotech.BibliotecaApplication
+import com.example.bibliotech.R
+import com.example.bibliotech.ui.componentes.TarjetaLibro
 import com.example.bibliotech.viewmodel.LibroViewModel
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,103 +64,119 @@ fun PantallaCatalogo(
     onMensajeMostrado: () -> Unit
 ) {
     val app = LocalContext.current.applicationContext as BibliotecaApplication
-    val viewModel : LibroViewModel = viewModel(
-        factory = object : ViewModelProvider.Factory{
-            override fun <T : ViewModel >create(modelClass:Class<T>): T{
+    val viewModel: LibroViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return LibroViewModel(app as Application) as T
             }
         }
     )
     val libros by viewModel.libros.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope= rememberCoroutineScope ()
+
     LaunchedEffect(Unit) {
         viewModel.cargarLibros()
     }
+
     LaunchedEffect(mensaje) {
-        if(mensaje != null){
+        if (mensaje != null) {
             snackbarHostState.showSnackbar(mensaje)
             onMensajeMostrado()
         }
     }
-    var textoBusqueda by remember { mutableStateOf("") }
-    val categoria = listOf("Todas","Literatura","Novela","Programacion" )
-    var categoriaSeleccionada by remember { mutableStateOf("Todas") }
-    val librosFiltrados = libros.filter { libro ->
-        val coincideTexto = libro.titulo.contains(textoBusqueda,
-            ignoreCase = true) || libro.autor.contains(textoBusqueda,
-            ignoreCase = true)
-        val coincideCategoria = categoriaSeleccionada =="Todas"||
-                libro.categoria == categoriaSeleccionada
-        coincideTexto && coincideCategoria
 
-    }
+    var textoBusqueda by remember { mutableStateOf("") }
+    val categoria = listOf("Todas", "Literatura", "Novela", "Programacion")
+    var categoriaSeleccionada by remember { mutableStateOf("Todas") }
+
+    // Se agrega distinctBy para evitar que se muestren libros repetidos
+    val librosFiltrados = libros
+        .distinctBy { it.titulo.lowercase().trim() }
+        .filter { libro ->
+            val coincideTexto = libro.titulo.contains(textoBusqueda, ignoreCase = true) ||
+                    libro.autor.contains(textoBusqueda, ignoreCase = true)
+            val coincideCategoria = categoriaSeleccionada == "Todas" ||
+                    libro.categoria == categoriaSeleccionada
+            coincideTexto && coincideCategoria
+        }
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         floatingActionButtonPosition = FabPosition.Start,
-
-        floatingActionButton =
-            {
-                FloatingActionButton(onClick = onAgregarLibro, containerColor = Color.Black) {
-                    Text("+", color= Color.White)
-                }
-            },
+        floatingActionButton = {
+            FloatingActionButton(onClick = onAgregarLibro, containerColor = Color.Black) {
+                Text("+", color = Color.White)
+            }
+        },
         topBar = {
-            TopAppBar(title = {Text("Catalogo de libros")})
-        }){
-            padding ->
+            TopAppBar(title = { Text("Catálogo de libros") })
+        }
+    ) { padding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(padding).padding(5.dp)
+            modifier = Modifier
                 .fillMaxSize()
-
+                .padding(padding)
+                .padding(5.dp)
         ) {
+            OutlinedTextField(
+                value = textoBusqueda,
+                onValueChange = { textoBusqueda = it },
+                label = { Text("Buscar libro o autor") },
+                modifier = Modifier.fillMaxWidth(),
+                textStyle = TextStyle(color = Color.White)
+            )
 
-            OutlinedTextField(value= textoBusqueda, onValueChange = {textoBusqueda = it}, label={Text("Buscar libro o autor")}, modifier=Modifier.fillMaxWidth(), textStyle = TextStyle(color = Color.White))
             Spacer(modifier = Modifier.height(12.dp))
+
             Row(modifier = Modifier.horizontalScroll(state = rememberScrollState())) {
-                categoria.forEach { categoria ->
-                    FilterChip(selected =categoriaSeleccionada == categoria,
-                        onClick={categoriaSeleccionada=categoria},
-                        label={
-                            Text(categoria)
-                        }
+                categoria.forEach { itemCategoria ->
+                    FilterChip(
+                        selected = categoriaSeleccionada == itemCategoria,
+                        onClick = { categoriaSeleccionada = itemCategoria },
+                        label = { Text(itemCategoria) }
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-
-            if(librosFiltrados.isEmpty()){
-                //MODIFICACION
-                Column(modifier = Modifier.fillMaxWidth()
-                    .padding(top=40.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally){
-                    Icon(imageVector = Icons.AutoMirrored.Filled.MenuBook,
+            if (librosFiltrados.isEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 40.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.MenuBook,
                         contentDescription = "Sin resultados",
-                        modifier = Modifier.size(48.dp))
+                        modifier = Modifier.size(100.dp),
+                        tint = Color.Gray
+                    )
 
                     Spacer(modifier = Modifier.height(12.dp))
-                    Text(text = "No se encontraron libros",
+
+                    Text(
+                        text = "No se encontraron libros",
                         fontWeight = FontWeight.Bold
                     )
-                    Text(text = "Prueba con otro título o autor")
                 }
-            }else{
-
-                //--
-                LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.weight(1f) ) {
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier.weight(1f)
+                ) {
                     items(librosFiltrados) { libro ->
-                        TarjetaLibro(libro = libro,
-                            onVerDetalles = {onVerDetalles(libro.id)})
+                        TarjetaLibro(
+                            libro = libro,
+                            onVerDetalles = {
+                                onVerDetalles(libro.id)
+                            }
+                        )
                     }
                 }
             }
         }
-
     }
 }
